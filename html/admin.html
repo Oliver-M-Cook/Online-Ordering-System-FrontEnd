@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Admin Console</title>
+    <!-- Links bootstrap css so the website can you bootstrap components -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <!-- bootstrap dropdown that shows restaurants dynamically  -->
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Restaurants
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu" id="restaurantDropDown"></ul>
+    </div>
+
+    <!-- Button to show addRestaurant modal -->
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addRestaurant">
+        Add Restaurant
+    </button>
+
+    <!-- modal thats pops up for the admin to add a restaurant -->
+    <div class="modal fade" id="addRestaurant" tabindex="-1" role="dialog" aria-labelledby="restaurantLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="restaurantLabel">Add Restaurant</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="restaurantName">Restaurant Name</label>
+                        <input type="text" id="restaurantName" placeholder="Restaurant Name..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="managerUsername">Username</label>
+                        <input type="text" id="managerUsername" placeholder="Username..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="managerPassword">Password</label>
+                        <input type="password" id="managerPassword" placeholder="Password..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="managerFirstName">First Name</label>
+                        <input type="text" id="managerFirstName" placeholder="First Name..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="managerLastName">Last Name</label>
+                        <input type="text" id="managerLastName" placeholder="Last Name..." class="form-control">
+                    </div>
+                    <div class="alert alert-danger" role="alert" id="missingData" hidden>Fields Cannot Be Left Blank
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <!-- Button calls function that handles form data -->
+                    <button type="button" class="btn btn-primary" onclick="addRestaurant()">Add Restaurant</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="updateRestaurant" tabindex="-1" role="dialog" aria-labelledby="updateRestaurantLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="updateRestaurantLabel">Update Restaurant</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="updateRestaurantID">Restaurant ID</label>
+                        <input type="text" id="updateRestaurantID" placeholder="Restaurant ID..." class="form-control"
+                            readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateRestaurantName">Restaurant Name</label>
+                        <input type="text" id="updateRestaurantName" placeholder="Restaurant Name..."
+                            class="form-control">
+                    </div>
+                    <div class="alert alert-danger" role="alert" id="missingName" hidden>Restaurant Name Cannot Be Blank
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="removeRestaurant()">Remove
+                        Restaurant</button>
+                    <button type="button" class="btn btn-primary" onclick="updateRestaurant()">Update
+                        Restaurant</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-danger" onclick="logout()">Logout</button>
+
+    <!-- Scripts for the page to function correctly -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="../javascript/adminScript.js"></script>
+    <script src="../javascript/logoutScript.js"></script>
+</body>
+
+</html>

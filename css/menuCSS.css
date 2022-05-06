@@ -1,0 +1,16 @@
+/* This css file is used to create
+the scrolling menu */
+img {
+	width: 242px;
+	height: 200px;
+}
+
+.scrolling-wrapper {
+	overflow-x: scroll;
+	overflow-y: hidden;
+	white-space: nowrap;
+}
+
+.card {
+	display: inline-block;
+}

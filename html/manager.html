@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Manager Console</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <meta charset="utf-8">
+</head>
+
+<body>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStaff">
+        Add Staff
+    </button>
+    <form class="form-inline">
+        <!-- Dropdown allows the manager to view a certain role -->
+        <label for="roleSelect">Search Staff Role</label>
+        <select class="form-control" id="searchRole" aria-label="searchRoleLabel">
+            <option value="waiter">Waiter</option>
+            <option value="kitchen">Kitchen</option>
+        </select>
+        <button type="button" class="btn btn-primary" onclick="getStaff()">View Staff</button>
+    </form>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMenuItem">
+        Add Menu Item
+    </button>
+
+    <button type="button" class="btn btn-primary" onclick="getItems()">View Menu Items</button>
+
+    <div class="modal fade" id="addMenuItem" tabindex="-1" role="dialog" aria-labelledby="itemLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="itemLabel">Add Menu Item</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="itemName">Item Name</label>
+                        <input type="text" id="itemName" placeholder="Item Name..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" id="price" placeholder="Price..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="calories">Calories</label>
+                        <input type="number" id="calories" placeholder="Calories..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="category" placeholder="Category..." class="form-control">
+                    </div>
+                    <div class="alert alert-danger" role="alert" id="missingDataAdd" hidden>Fields Cannot Be Blank
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addItem()">Add Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewSingleItem" tabindex="-1" role="dialog" aria-labelledby="singleItemLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="singleItemLabel">Change Menu Item</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="singleItemID">Item ID</label>
+                        <input type="text" class="form-control" id="singleItemID" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="singleItemName">Item Name</label>
+                        <input type="text" class="form-control" id="singleItemName" placeholder="Item Name...">
+                    </div>
+                    <div class="form-group">
+                        <label for="singleItemPrice">Item Price</label>
+                        <input type="number" class="form-control" id="singleItemPrice" placeholder="Item Price...">
+                    </div>
+                    <div class="form-group">
+                        <label for="singleItemCalories">Item Calories</label>
+                        <input type="number" class="form-control" id="singleItemCalories"
+                            placeholder="Item Calories...">
+                    </div>
+                    <div class="form-group">
+                        <label for="singleItemCategory">Item Category</label>
+                        <input type="text" class="form-control" id="singleItemCategory" placeholder="Item Category...">
+                    </div>
+                    <div class="alert alert-danger" role="alert" id="missingDataUpdate" hidden>Fields Cannot Be
+                        Blank
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="removeItem()">Remove Item</button>
+                    <button type="button" class="btn btn-primary" onclick="updateItem()">Update Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addStaff" tabindex="-1" role="dialog" aria-labelledby="staffLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="staffLabel">Add Staff</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="roleSelect">Staff Role</label>
+                        <select class="form-control" id="roleSelect" aria-label="roleSelectLabel">
+                            <option value="waiter">Waiter</option>
+                            <option value="kitchen">Kitchen</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Username..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Password..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" placeholder="First Name..." class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" placeholder="Last Name..." class="form-control">
+                    </div>
+                    <div class="alert alert-danger" role="alert" id="missingStaffData" hidden>Restaurant Name Cannot Be
+                        Blank
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addStaff()">Add Staff</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewStaff" tabindex="-1" role="dialog" aria-labelledby="viewStaffLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="viewStaffLabel">View Staff</h4>
+                </div>
+                <!-- Modal body is empty becuase it is generated dynamically -->
+                <div class="modal-body" id="viewStaffBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewItems" tabindex="-1" role="dialog" aria-labelledby="viewItemsLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="viewItemsLabel">View Menu Items</h4>
+                </div>
+                <div class="modal-body" id="viewItemsBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <button type="button" class="btn btn-danger" onclick="logout()">Logout</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="../javascript/logoutScript.js"></script>
+    <script src="../javascript/managerScript.js"></script>
+</body>
+
+</html>
