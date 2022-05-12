@@ -1,3 +1,4 @@
+// This function sends POST request to the server to add new staff
 const addStaff = () => {
 	const username = $('#username').val();
 	const password = $('#password').val();
@@ -24,10 +25,12 @@ const addStaff = () => {
 			lastName: lastName,
 		};
 
+		// Formats the data so it can be through request body
 		const formattedData = JSON.stringify(data);
 
 		$('#addStaff').modal('hide');
 
+		// Different staff have different routes
 		if (role === 'waiter') {
 			let url = 'http://localhost:3000/restaurant/';
 			url += restaurantID + '/waiter';
@@ -58,6 +61,7 @@ const addStaff = () => {
 	}
 };
 
+// This function tells the user that it was a success
 const addSuccess = (response) => {
 	alert(response);
 };
@@ -94,6 +98,7 @@ const getStaff = () => {
 const getSuccess = (response) => {
 	$('#viewStaffBody').children().remove();
 
+	// Creates all the elements needed to display the data
 	const table = document.createElement('table');
 	table.setAttribute('class', 'table table-striped');
 
@@ -150,10 +155,13 @@ const getSuccess = (response) => {
 
 	$('#viewStaffBody').append(table);
 
+	// Shows the modal with the new data
 	$('#viewStaff').modal('show');
 };
 
+// Sends delete request to the server
 const handleRemoveStaff = (event) => {
+	// Gets the data from the table row that was clicked
 	const userID = $(event).closest('tr').data('userID');
 	const roleID = $(event).closest('tr').data('roleID');
 
@@ -172,6 +180,7 @@ const handleRemoveStaff = (event) => {
 		url += restaurantID + '/kitchen/' + userID;
 	}
 
+	// Removes the row from the table
 	$(event).closest('tr').remove();
 
 	$.ajax({
@@ -271,6 +280,7 @@ const getItemSuccess = (response) => {
 
 	const tableBody = document.createElement('tbody');
 
+	// Loops through the data to display the data in the correct row
 	for (let i = 0; i < response.length; i++) {
 		const tr = document.createElement('tr');
 		$(tr).data('itemID', response[i].itemID);
@@ -302,6 +312,7 @@ const getItemSuccess = (response) => {
 };
 
 const getSingleItem = (event) => {
+	// Gets the itemID from the click event
 	const itemID = $(event).data('itemID');
 
 	const authToken = sessionStorage.getItem('authToken');
@@ -351,6 +362,7 @@ const removeItemSuccess = (response) => {
 	$('#viewSingleItem').modal('hide');
 };
 
+// Sends PUT request to server
 const updateItem = () => {
 	const itemID = $('#singleItemID').val();
 	const itemName = $('#singleItemName').val();

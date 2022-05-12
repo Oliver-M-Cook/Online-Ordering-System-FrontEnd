@@ -1,10 +1,12 @@
 let intervalID = null;
 
+// This function is called when the window loads
 window.onload = function () {
 	getOrders();
 	intervalID = setInterval(getOrders, 15000);
 };
 
+// Sends GET request to get orders from server
 const getOrders = () => {
 	const authToken = sessionStorage.getItem('authToken');
 	const restaurantID = sessionStorage.getItem('restaurantID');
@@ -20,12 +22,14 @@ const getOrders = () => {
 	});
 };
 
+// This function is called when the get request is successful
 const getOrdersSuccess = (response) => {
-	console.log(response);
-
+	// Clears the container for new data
 	$('#orderContainer').children().remove();
 
+	// Loops through response
 	for (let i = 0; i < response.length; i++) {
+		// Creates elements to hold the data
 		const divOne = document.createElement('div');
 		divOne.setAttribute('class', 'col-xs-3');
 
@@ -40,6 +44,7 @@ const getOrdersSuccess = (response) => {
 
 		divThree.append(title);
 
+		// Loops through orders to append each one to the div
 		for (let j = 0; j < response[i].orders.length; j++) {
 			const orders = response[i].orders;
 
@@ -60,12 +65,14 @@ const getOrdersSuccess = (response) => {
 
 		divThree.append(clearButton);
 
+		// Adds the data to the webpage dynamically
 		divTwo.append(divThree);
 		divOne.append(divTwo);
 		$('#orderContainer').append(divOne);
 	}
 };
 
+// Calls DELETE request to the server to remove orders with specified table number
 const clearTable = (event) => {
 	const tableNumber = $(event).data('tableNumber');
 
@@ -83,10 +90,12 @@ const clearTable = (event) => {
 	});
 };
 
+// This function is called when the delete is successful
 const clearTableSuccess = (response) => {
 	getOrders();
 };
 
+// This function logs the user out
 const handleLogout = () => {
 	clearInterval(intervalID);
 	logout();

@@ -1,7 +1,9 @@
+// This function is called when the window is loaded into the browser
 window.onload = function () {
 	getItems();
 };
 
+// This function gets all the items to the restaurant
 const getItems = () => {
 	const authToken = sessionStorage.getItem('authToken');
 	const restaurantID = sessionStorage.getItem('restaurantID');
@@ -21,12 +23,14 @@ const getItemsSuccess = (response) => {
 	const categories = [];
 	const sortedItems = {};
 
+	// This loop organises the categories
 	for (let i = 0; i < response.length; i++) {
 		if (!categories.includes(response[i].category)) {
 			categories.push(response[i].category);
 		}
 	}
 
+	// This loop organises the items for each category
 	for (let i = 0; i < categories.length; i++) {
 		const tempItems = [];
 		for (let j = 0; j < response.length; j++) {
@@ -37,6 +41,7 @@ const getItemsSuccess = (response) => {
 		sortedItems[categories[i]] = tempItems;
 	}
 
+	// Loops through data and forms clickable tabs
 	for (let i = 0; i < categories.length; i++) {
 		const li = document.createElement('li');
 
@@ -58,6 +63,7 @@ const getItemsSuccess = (response) => {
 	console.log(sortedItems);
 };
 
+// This function builds the tab content for the menu
 const createTabContent = (category, sortedItems, iteration) => {
 	const divOne = document.createElement('div');
 	divOne.setAttribute('id', category);
@@ -74,6 +80,7 @@ const createTabContent = (category, sortedItems, iteration) => {
 	const divTwo = document.createElement('div');
 	divTwo.setAttribute('class', 'scrolling-wrapper');
 
+	// Adds the data to elements to be displayed to the webpage
 	for (let i = 0; i < sortedItems[category].length; i++) {
 		const divThree = document.createElement('div');
 		divThree.setAttribute('class', 'card');
@@ -110,9 +117,6 @@ const createTabContent = (category, sortedItems, iteration) => {
 			addToBasket(this);
 		});
 
-		// const addButton = document.createElement('button');
-		// addButton.setAttribute('class', 'btn, btn-primary');
-
 		const plusSymbol = document.createElement('span');
 		plusSymbol.setAttribute('class', 'glyphicon glyphicon-plus-sign');
 
@@ -125,6 +129,7 @@ const createTabContent = (category, sortedItems, iteration) => {
 	}
 	divOne.append(title, divTwo);
 
+	// Adds the completed div to webpage
 	$('#tabContent').append(divOne);
 };
 
@@ -133,6 +138,7 @@ const addToBasket = (event) => {
 	const itemName = $(event).data('itemName');
 	const price = $(event).data('price');
 
+	// Checks if a basket exists, if not creates a new basket
 	if (!sessionStorage.getItem('basket')) {
 		sessionStorage.setItem('basket', JSON.stringify([]));
 	}
@@ -141,15 +147,15 @@ const addToBasket = (event) => {
 
 	let existsInBasket = false;
 
-	//{itemID: x, itemName: y, quantity: z, price: q}
-
 	for (let i = 0; i < basket.length; i++) {
+		// Checks if the item is already in the basket
 		if (basket[i].itemID === itemID) {
 			existsInBasket = true;
 			basket[i].quantity += 1;
 
 			let tempPrice = basket[i].price;
 			tempPrice += price;
+			// Rounds the price to avoid recurring prices
 			const roundedNum = Math.round((tempPrice + Number.EPSILON) * 100) / 100;
 
 			basket[i].price = roundedNum;
@@ -168,12 +174,15 @@ const addToBasket = (event) => {
 		basket.push(basketItem);
 	}
 
+	// Saves the basket in session storage
 	sessionStorage.setItem('basket', JSON.stringify(basket));
 };
 
+// This function handles showing the basket
 const showBasket = () => {
 	const basket = JSON.parse(sessionStorage.getItem('basket'));
 
+	// Clear olds data from the element
 	$('#viewBasketBody').children().remove();
 
 	const table = document.createElement('table');
@@ -197,6 +206,7 @@ const showBasket = () => {
 
 	const tableBody = document.createElement('tbody');
 
+	// Loops through the basket to create elements to hold the data
 	for (let i = 0; i < basket.length; i++) {
 		const tr = document.createElement('tr');
 		$(tr).data('itemID', basket[i].itemID);
@@ -222,6 +232,7 @@ const showBasket = () => {
 		});
 
 		const minuesSymbol = document.createElement('span');
+		// Glyphicon symbols to show plus and minus
 		minuesSymbol.setAttribute('class', 'glyphicon glyphicon-minus-sign');
 
 		const plusButton = document.createElement('button');
@@ -245,6 +256,7 @@ const showBasket = () => {
 
 	let total = 0;
 
+	// For loop works out the total of the basket
 	for (let i = 0; i < basket.length; i++) {
 		let tempTotal = total;
 		tempTotal += basket[i].price;
@@ -310,6 +322,7 @@ const removeFromBasket = (event) => {
 	showBasket();
 };
 
+// POSTs order to server
 const sendOrder = () => {
 	const basket = JSON.parse(sessionStorage.getItem('basket'));
 
@@ -320,6 +333,7 @@ const sendOrder = () => {
 
 	if (tableNumber !== '') {
 		$('#missingNumber')[0].setAttribute('hidden', true);
+		// Appends the table number to each item in the basket
 		for (let i = 0; i < basket.length; i++) {
 			basket[i].tableNumber = tableNumber;
 		}
@@ -342,6 +356,7 @@ const sendOrder = () => {
 	}
 };
 
+// Shows user that order has been sent
 const orderSuccess = (response) => {
 	alert(response);
 	$('#viewBasket').modal('hide');

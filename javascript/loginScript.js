@@ -1,3 +1,4 @@
+// This function gets the form data
 const getFormData = () => {
 	const username = document.getElementById('username').value;
 	const password = document.getElementById('password').value;
@@ -10,8 +11,8 @@ const getFormData = () => {
 	sendLoginData(formData);
 };
 
+// Sends POST to server to login
 const sendLoginData = (jsonData) => {
-	//Add ajax call to the server
 	const formattedData = JSON.stringify(jsonData);
 
 	$.ajax({
@@ -24,14 +25,18 @@ const sendLoginData = (jsonData) => {
 	});
 };
 
+// This function is called if the login fails
 const loginFailure = () => {
 	const div = $('#incorrectLogin');
 	div[0].removeAttribute('hidden');
 };
 
+// This function is called when the login is a success
 const loginSuccess = (response) => {
+	// Stores the authToken in session storage
 	sessionStorage.setItem('authToken', response.authToken);
-	console.log(response);
+
+	// If statements load the right page for the role
 	if (response.restaurantID) {
 		sessionStorage.setItem('restaurantID', response.restaurantID);
 	}
@@ -48,6 +53,7 @@ const loginSuccess = (response) => {
 	}
 };
 
+// Collects the data from the form
 const handleSignUpData = () => {
 	const username = $('#customerUsername').val();
 	const password = $('#customerPassword').val();
@@ -67,8 +73,6 @@ const handleSignUpData = () => {
 			lastName: lastName,
 		};
 
-		console.log(data);
-
 		const formattedData = JSON.stringify(data);
 
 		$.ajax({
@@ -83,11 +87,13 @@ const handleSignUpData = () => {
 	}
 };
 
+// This function is called when the sign up is a success
 const handleSignUpSuccess = (response) => {
 	alert('Account Created');
 	$('#signUp').modal('hide');
 };
 
+// This function sends GET request to the server
 const getRestaurants = () => {
 	const authToken = sessionStorage.getItem('authToken');
 
@@ -99,9 +105,11 @@ const getRestaurants = () => {
 	});
 };
 
+// This function is called when the restaurants and returned
 const handleRestaurantsSuccess = (response) => {
 	$('#restaurantSelectBody').children().remove();
 
+	// Creates the elements needed to show the data
 	const formGroup = document.createElement('div');
 	formGroup.setAttribute('class', 'form-group');
 
@@ -113,6 +121,7 @@ const handleRestaurantsSuccess = (response) => {
 	select.setAttribute('class', 'form-control');
 	select.setAttribute('id', 'selectRestaurant');
 
+	// Loops through the data and creates elements needed to show the data
 	for (let i = 0; i < response.length; i++) {
 		const option = document.createElement('option');
 		option.setAttribute('value', response[i].restaurantID);
@@ -126,6 +135,7 @@ const handleRestaurantsSuccess = (response) => {
 	$('#restaurantSelectModal').modal('show');
 };
 
+// This function sets the data needed to view the menu
 const handleSelectRestaurant = () => {
 	const restaurantID = $('#selectRestaurant').val();
 

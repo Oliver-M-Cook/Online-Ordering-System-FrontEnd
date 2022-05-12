@@ -1,7 +1,9 @@
+// Calls this function when the window is loaded
 window.onload = function () {
 	getRestaurants();
 };
 
+// Gets restaurants using GET request
 const getRestaurants = () => {
 	const authToken = sessionStorage.getItem('authToken');
 
@@ -15,11 +17,14 @@ const getRestaurants = () => {
 	});
 };
 
+// Handles the restaurants from response
 const handleRestaurants = (results) => {
+	// Resets the drop down menu
 	$('#restaurantDropDown').children().remove();
 	for (let i = 0; i < results.length; i++) {
 		const restaurantName = results[i].restaurantName;
 
+		// Creates the elements needed to dynamically generate results
 		const li = document.createElement('li');
 		const link = document.createElement('a');
 		const text = document.createTextNode(restaurantName);
@@ -35,7 +40,9 @@ const handleRestaurants = (results) => {
 	}
 };
 
+// Sends post request to server to add new restaurant
 const addRestaurant = () => {
+	// Gets data from html forms
 	const username = $('#managerUsername').val();
 	const password = $('#managerPassword').val();
 	const firstName = $('#managerFirstName').val();
@@ -75,12 +82,14 @@ const addRestaurant = () => {
 	}
 };
 
+// This is called when the restaurant is added successfully
 const addSuccess = () => {
 	getRestaurants();
 	alert('Restaurant Added');
 	$('#addRestaurant').modal('hide');
 };
 
+// Sends get request to server for a single restaurant
 const getSingleRestaurant = (event) => {
 	const restaurantID = event.toElement.id;
 
@@ -94,12 +103,14 @@ const getSingleRestaurant = (event) => {
 	});
 };
 
+// Shows the data on the webpage
 const handleSingleRestaurant = (result) => {
 	$('#updateRestaurantID').val(result.restaurantID);
 	$('#updateRestaurantName').val(result.restaurantName);
 	$('#updateRestaurant').modal('show');
 };
 
+// Sends PUT request to server
 const updateRestaurant = () => {
 	const restaurantID = $('#updateRestaurantID').val();
 	const restaurantName = $('#updateRestaurantName').val();
@@ -129,11 +140,13 @@ const updateRestaurant = () => {
 	}
 };
 
+// Called when update is a success
 const updateSuccess = () => {
 	getRestaurants();
 	alert('Updated Restaurant');
 };
 
+// Sends DELETE Request to server
 const removeRestaurant = () => {
 	const restaurantID = $('#updateRestaurantID').val();
 
@@ -147,6 +160,7 @@ const removeRestaurant = () => {
 	});
 };
 
+// Function runs with successful delete
 const removeSuccess = (response) => {
 	getRestaurants();
 	alert('Successfully Deleted Restaurant');

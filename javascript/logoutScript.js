@@ -1,3 +1,4 @@
+// This function calls the logout request to the server
 const logout = () => {
 	const authToken = sessionStorage.getItem('authToken');
 
@@ -9,7 +10,9 @@ const logout = () => {
 	});
 };
 
+// This function is called on success of the PUT request
 const logoutSuccess = (response) => {
+	// This clears the session storage
 	sessionStorage.clear();
 	window.location.replace('../html/index.html');
 };
